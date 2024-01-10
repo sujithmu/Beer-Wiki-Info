@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Beer, ApiParams, MetaData, SORT, TYPE } from '../../types';
+import { Beer, ApiParams, MetaData, SORT } from '../../types';
 import { fetchData, fetchMetaData } from './utils';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -28,7 +28,6 @@ const BeerList = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(true);
   const [sort, setSort] = useState<SORT>("name:asc");
-  const [type, setType] = useState<TYPE>('all types');
   const [name, setName] = useState<string>('');
   
   // eslint-disable-next-line
@@ -39,17 +38,13 @@ const BeerList = () => {
       per_page: rowsPerPage
     } as ApiParams;
 
-    if (type && type !== 'all types') {
-      params.by_type = type;
-    }
-
     if (name) {
       params.by_name = name;
     }
 
     fetchData(setBeerList, params, () => setLoading(false));
     fetchMetaData(setMetaData, params);
-  }, [page, rowsPerPage, sort, type, name]);
+  }, [page, rowsPerPage, sort, name]);
 
   const onBeerClick = (id: string) => navigate(`/beer/${id}`);
 
